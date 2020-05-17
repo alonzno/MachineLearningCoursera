@@ -15,8 +15,11 @@ figure; hold on;
 
 
 
-
-
+% plot(X,'k+', 'MarkerSize', 10);
+positive_i = find(y == 1);
+negative_i = find(y == 0);
+plot(X(positive_i, 1), X(positive_i, 2), 'k+', 'MarkerSize', 7, 'LineWidth', 2);
+plot(X(negative_i, 1), X(negative_i, 2), 'ko', 'MarkerSize', 7, 'MarkerFaceColor', 'y');
 
 
 
