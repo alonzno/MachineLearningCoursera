@@ -22,7 +22,15 @@ p = zeros(size(X, 1), 1);
 %
 
 
+X_t = [ones(m,1)'; X'];		% Add the bias parameter
+X = X_t';
 
+a_1 = sigmoid(X * Theta1');
+
+a_1_t = [ones(m,1)'; a_1'];		% Add the bias parameter
+a_1 = a_1_t';
+
+[trash p] = max(sigmoid(a_1 * Theta2'), [], 2);
 
 
 
