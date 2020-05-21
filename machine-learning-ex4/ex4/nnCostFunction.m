@@ -100,10 +100,8 @@ for t = 1:m,
 	Theta1_grad = Theta1_grad + delta_2(2:end) * a_1';
 end;
 
-reg_2 = lambda * [ones(size(Theta2,2),1)'; Theta2(2:end,:)];
-reg_1 = lambda * [ones(size(Theta1,2),1)'; Theta1(2:end,:)];
-
-
+reg_2 = [zeros(size(Theta2,1),1) (lambda * Theta2(:, 2:end))];
+reg_1 = [zeros(size(Theta1,1),1) (lambda * Theta1(:, 2:end))];
 
 Theta2_grad = (1/m) * (Theta2_grad + reg_2);
 Theta1_grad = (1/m) * (Theta1_grad + reg_1);
