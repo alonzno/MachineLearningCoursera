@@ -63,6 +63,53 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+a_1 = [ones(m,1) X];
+
+z_2 = a_1 * Theta1';
+a_2 = sigmoid(z_2);
+a_2 = [ones(m,1) a_2];	% Add bias
+
+size(a_2);
+size(Theta2);
+
+z_3 = a_2 * Theta2';
+H = sigmoid(z_3);
+
+
+for t = 1:m,
+	a_1 = [1; X(t, :)'];
+	size(a_1);
+	size(Theta1);
+	z_2 = Theta1 * a_1;
+	a_2 = sigmoid(z_2);
+	a_2 = [1; a_2];
+	size(a_2);
+	size(Theta2);
+	z_3 = Theta2 * a_2;
+	a_3 = sigmoid(z_3);
+
+	y_i = y(t);
+	y_vec = zeros(size(a_3));
+	y_vec(y_i) = 1;
+
+	delta_3 = a_3 - y_vec;
+
+	delta_2 = Theta2' * delta_3 .* sigmoidGradient([1;z_2]);
+
+	Theta2_grad = Theta2_grad + delta_3 * a_2';
+	Theta1_grad = Theta1_grad + delta_2(2:end) * a_1';
+end;
+
+Theta2_grad = (1/m) * Theta2_grad;
+Theta1_grad = (1/m) * Theta1_grad;
+
+I = eye(num_labels);
+Y = zeros(m, num_labels);
+for i=1:m
+	Y(i, :)= I(y(i), :);
+end
+
+J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
 
 
 
