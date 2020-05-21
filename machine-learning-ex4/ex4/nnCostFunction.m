@@ -100,8 +100,13 @@ for t = 1:m,
 	Theta1_grad = Theta1_grad + delta_2(2:end) * a_1';
 end;
 
-Theta2_grad = (1/m) * Theta2_grad;
-Theta1_grad = (1/m) * Theta1_grad;
+reg_2 = lambda * [ones(size(Theta2,2),1)'; Theta2(2:end,:)];
+reg_1 = lambda * [ones(size(Theta1,2),1)'; Theta1(2:end,:)];
+
+
+
+Theta2_grad = (1/m) * (Theta2_grad + reg_2);
+Theta1_grad = (1/m) * (Theta1_grad + reg_1);
 
 I = eye(num_labels);
 Y = zeros(m, num_labels);
@@ -109,7 +114,8 @@ for i=1:m
 	Y(i, :)= I(y(i), :);
 end
 
-J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2));
+reg_cost = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2, 2))  + sum(sum(Theta2(:, 2:end) .^ 2, 2)));
+J = (1/m)*sum(sum((-Y).*log(H) - (1-Y).*log(1-H), 2)) + reg_cost;
 
 
 
