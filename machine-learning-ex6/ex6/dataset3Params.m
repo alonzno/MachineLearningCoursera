@@ -24,7 +24,27 @@ sigma = 0.3;
 %
 
 
+hyper = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 
+best_C = 1;
+best_sigma = 1;
+best_error = inf;
+
+for i = 1:8;
+	for j = 1:8;
+		model= svmTrain(X, y, hyper(i), @(x1, x2) gaussianKernel(x1, x2, hyper(j)));
+		predictions = svmPredict(model, Xval);
+		err = mean(double(predictions ~= yval));
+		if err < best_error;
+			best_error = err;
+			best_C = hyper(i);
+			best_sigma = hyper(j);
+		end; 
+	end;
+end;
+
+C = best_C
+sigma = best_sigma
 
 
 
